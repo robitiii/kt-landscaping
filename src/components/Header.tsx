@@ -50,19 +50,19 @@ const Header = () => {
 
         {isMenuOpen && (
           <nav className="md:hidden mt-4 pb-4 space-y-2">
-            <a href="#home" className="block py-2 text-gray-700 hover:text-nature-500 transition-colors font-inter">
+            <a href="#home" className="block py-2 text-gray-700 hover:text-nature-500 transition-colors font-inter" onClick={() => setIsMenuOpen(false)}>
               Home
             </a>
-            <a href="#services" className="block py-2 text-gray-700 hover:text-nature-500 transition-colors font-inter">
+            <a href="#services" className="block py-2 text-gray-700 hover:text-nature-500 transition-colors font-inter" onClick={() => setIsMenuOpen(false)}>
               Services
             </a>
-            <a href="#gallery" className="block py-2 text-gray-700 hover:text-nature-500 transition-colors font-inter">
+            <a href="#gallery" className="block py-2 text-gray-700 hover:text-nature-500 transition-colors font-inter" onClick={() => setIsMenuOpen(false)}>
               Gallery
             </a>
-            <a href="#about" className="block py-2 text-gray-700 hover:text-nature-500 transition-colors font-inter">
+            <a href="#about" className="block py-2 text-gray-700 hover:text-nature-500 transition-colors font-inter" onClick={() => setIsMenuOpen(false)}>
               About
             </a>
-            <a href="#contact" className="block py-2 text-gray-700 hover:text-nature-500 transition-colors font-inter">
+            <a href="#contact" className="block py-2 text-gray-700 hover:text-nature-500 transition-colors font-inter" onClick={() => setIsMenuOpen(false)}>
               Contact
             </a>
           </nav>
