@@ -1,7 +1,54 @@
-
-import React from 'react';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 const ContactSection = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    const toastId = toast.loading('Sending your message...');
+
+    try {
+      const response = await fetch('https://hook.eu2.make.com/g5jkqnxnuamufcwqgcumfobs026ivgw1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Something went wrong. Please try again.');
+      }
+
+      toast.success('Your message has been sent successfully!', {
+        id: toastId,
+        duration: 3000,
+      });
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred.';
+      toast.error(errorMessage, {
+        id: toastId,
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section id="contact" className="py-20 bg-nature-800 text-white">
       <div className="container mx-auto px-4">
@@ -18,32 +65,48 @@ const ContactSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="space-y-6">
               <h3 className="text-2xl font-playfair font-semibold mb-6">Get Your Free Quote</h3>
-              <form className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <input 
                   type="text" 
+                  name="name"
                   placeholder="Your Name" 
+                  value={formData.name}
+                  onChange={handleInputChange}
                   className="w-full p-4 rounded-lg bg-white text-gray-800 font-inter"
+                  required
                 />
                 <input 
                   type="email" 
+                  name="email"
                   placeholder="Your Email" 
+                  value={formData.email}
+                  onChange={handleInputChange}
                   className="w-full p-4 rounded-lg bg-white text-gray-800 font-inter"
+                  required
                 />
                 <input 
                   type="tel" 
+                  name="phone"
                   placeholder="Your Phone" 
+                  value={formData.phone}
+                  onChange={handleInputChange}
                   className="w-full p-4 rounded-lg bg-white text-gray-800 font-inter"
                 />
                 <textarea 
+                  name="message"
                   placeholder="Tell us about your project..." 
                   rows={4}
+                  value={formData.message}
+                  onChange={handleInputChange}
                   className="w-full p-4 rounded-lg bg-white text-gray-800 font-inter resize-none"
+                  required
                 ></textarea>
                 <button 
                   type="submit"
-                  className="w-full bg-earth-500 hover:bg-earth-600 text-white py-4 rounded-lg font-inter font-semibold transition-colors duration-300"
+                  disabled={isSubmitting}
+                  className="w-full bg-earth-500 hover:bg-earth-600 text-white py-4 rounded-lg font-inter font-semibold transition-colors duration-300 disabled:bg-gray-400"
                 >
-                  Get My Free Quote
+                  {isSubmitting ? 'Sending...' : 'Get My Free Quote'}
                 </button>
               </form>
             </div>
